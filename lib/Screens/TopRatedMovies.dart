@@ -23,7 +23,6 @@ class _MovieListState extends State<MovieList> {
 
   @override
   void initState() {
-    print('Build Context: $context');
     movieBusinessLogic = MovieBusinessLogic();
     isLoading = true;
     loadData();
@@ -105,8 +104,8 @@ class _MovieListState extends State<MovieList> {
                           itemBuilder: (context, index) => MovieCard(
                                 movieModel: map['result'].results[index],
                               ),
-                          separatorBuilder: (context, index) => Divider(
-                            color: Colors.green,
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: 5,
                           ),
                           itemCount: map['result'].results.length),
                     ),
@@ -149,30 +148,36 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => MovieDetails(movieModel))),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.network(
-                "${Constants.IMAGE_URL}${movieModel.posterPath}",
-                height: 100,
-                width: 100,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => MovieDetails(movieModel))),
+        child: Card(
+          elevation: 10,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.network(
+                    "${Constants.IMAGE_URL}${movieModel.posterPath}",
+                    height: 100,
+                    width: 100,
+                  ),
+                  Text(
+                    "${movieModel.title}",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
-              Text(
-                "${movieModel.title}",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ],
+            ),
           ),
         ),
       ),
